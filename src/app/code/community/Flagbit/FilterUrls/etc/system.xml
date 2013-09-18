@@ -13,6 +13,7 @@ from the Layered Category Filter. This is usually root category -->
                             <!--TODO source_model to be a collection of active categories-->
                             <comment>This is the Top Level Category Id, which will not appear in the catalog layer state</comment>
                             <sort_order>900</sort_order>
+                            <validate>validate-digits</validate>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

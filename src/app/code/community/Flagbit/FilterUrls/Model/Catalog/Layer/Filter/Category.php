@@ -22,7 +22,7 @@ Class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Category extends Mage_Catalo
         }
         $this->_categoryId = $filter;
         //Get the top level category from System Configuration
-        $iTopCategory=Mage::getStoreConfig('catalog/seo/root_category');
+        $iTopCategory=(int)Mage::getStoreConfig('catalog/seo/root_category');
         Mage::register('current_category_filter', $this->getCategory(), true);
 
         $this->_appliedCategory = Mage::getModel('catalog/category')
