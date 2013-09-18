@@ -95,7 +95,8 @@ class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Mo
     public function getSpeakingFilterUrl($addOwnValue, $withoutFilter = FALSE, $additionalQueryParams = array())
     {
         $filterUrlArray = $this->_getFilterUrlArrayForCurrentState($withoutFilter);
-
+        //Initialize the url for the category filter
+        $url='';
         $query = $filterUrlArray['query'];
         $query[Mage::getBlockSingleton('page/html_pager')->getPageVarName()] = null; // exclude current page from urls
 
@@ -110,11 +111,25 @@ class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Mo
                 //we need to put out value as well to the array
                 $filterUrlArray['attributes'][$this->getFilter()->getAttributeModel()->getAttributeCode()] = $this->getValue();
                 $filterUrlArray['filterUrl'][$position] = $this->_getRewriteForFilterOption($this->getFilter(), $this->getValue());
+            }
+            // If its  Layered Category Filter get the url path to create the url
+            else if($this->getFilter() instanceof Mage_Catalog_Model_Layer_Filter_Category){
+                $iCategoryId=$this->getValue();
+                $url=$this->getCategoryUrlPath($iCategoryId);
+
             } else {
                 $query[$this->getFilter()->getRequestVar()] = $this->getValue();
             }
         }
+        else if(count($this->getData())>0){
+                // Return the Current State Url Path for the Layered Category Filter
+                if($this->getFilter() instanceof Mage_Catalog_Model_Layer_Filter_Category){
+                    /* @var $this->getFilter() Mage_Catalog_Model_Layer_Filter_Category*/
+                    $iCategoryId=$this->getFilter()->getLayer()->getCurrentCategory()->getParentId();
+                    $url=$this->getCategoryUrlPath($iCategoryId);
 
+                }
+        }
 
         ksort($filterUrlArray['filterUrl']);
         $filterUrlString = implode('-', $filterUrlArray['filterUrl']);
@@ -123,7 +138,12 @@ class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Mo
         if(Mage::registry('current_category') != null) {
             /** @var $category Mage_Catalog_Model_Category */
             $category = Mage::registry('current_category');
-            $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), '', $category->getUrl());
+            //Set only if the filter is not a layered category Filter
+            if(!$url)
+            {
+                $url = str_replace(Mage::getStoreConfig('web/unsecure/base_url'), '', $category->getUrl());
+            }
+
         }
         $url = preg_replace('/\?.*/', '', $url);
 
@@ -180,7 +200,8 @@ class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Mo
                 $filterUrlArray[$item->getFilter()->getAttributeModel()->getPosition()] = $this->_getRewriteForFilterOption($item->getFilter(), $item->getValue());
                 //put addtional filter values to the the attributes array, everything except our selves.
                 $attributesArray[$item->getFilter()->getAttributeModel()->getAttributeCode()] = $item->getValue();
-            } else {
+            //Ignore the query param for Layered category Filter
+            } else if(!($item->getFilter() instanceof Mage_Catalog_Model_Layer_Filter_Category)){
                 $query[$item->getFilter()->getRequestVar()] = $item->getValueString();
             }
         }
@@ -202,5 +223,32 @@ class Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Mo
         return Mage::getModel('filterurls/rewrite')
             ->loadByFilterOption($filter, $value)
             ->getRewrite();
+    }
+
+    /**
+     * Returns the category Url Path based on the Category Id
+     * @param $iCategoryId
+     * @return array
+     */
+    public function getCategoryUrlPath($iCategoryId){
+        $aCategory=Mage::getModel('catalog/category')->getCollection()
+            ->addAttributeToFilter('entity_id',$iCategoryId)
+            ->addAttributeToSelect('url_path')
+            ->getFirstItem();
+        return $vCategoryUrlPath=$aCategory->getData('url_path');
+    }
+
+    /**
+     * For price filter 20,30 will be replaced by 20-30
+     *
+     * @return string
+     */
+    public function getValueString()
+    {
+        $value = $this->getValue();
+        if (is_array($value)) {
+            return implode('-', $value);
+        }
+        return $value;
     }
 }
