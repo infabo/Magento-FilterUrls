@@ -89,12 +89,25 @@ class Flagbit_FilterUrls_Model_Rewrite extends Mage_Core_Model_Abstract
 
         // normally this should be done using the setIdFilter option of the collection. Unfortunately this results in an
         // error in Magento version 1.6.2.0
-        $optionCollection->getSelect()->where('`main_table`.`option_id` = ?', $optionId);
+        // Get the option id corresponding to the attribute id
+        $optionCollection->getSelect()->where('`main_table`.`option_id` = ?', $optionId)
+                                      ->where('`main_table`.`attribute_id` = ?', $filter->getAttributeModel()->getAttributeId());
         $option = $optionCollection->getFirstItem();
 
         // get all currently filterable attributes
         $category = Mage::registry('current_category');
+        //Get the options from the custom source model of the attribute
         $filterableAttributes = Mage::getSingleton('filterurls/catalog_layer')->setCurrentCategory($category)->getFilterableAttributes()->getItems();
+        if($option->isObjectNew()) {
+            $aAttributeOptions = $filter->getAttributeModel()->getSource()->getAllOptions();
+            foreach($aAttributeOptions as $aAttributeOption){
+                if($aAttributeOption['value']==$optionId){
+                    $option->setValue($aAttributeOption['label']);
+                    $option->setAttributeId($filter->getAttributeModel()->getAttributeId());
+                    break;
+                }
+            }
+        }
 
         // failure, if current attribute not filterable or the option does not belong to the given attribute model
         if (!in_array($option['attribute_id'], array_keys($filterableAttributes))
