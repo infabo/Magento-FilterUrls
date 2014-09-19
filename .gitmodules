@@ -1,3 +1,3 @@
 [submodule "packager"]
 	path = packager
-	url = git@github.com:Flagbit/Magento-Packager.git
+	url = https://github.com/Flagbit/Magento-Packager.git
