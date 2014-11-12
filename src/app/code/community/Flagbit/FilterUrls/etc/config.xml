@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Flagbit_FilterUrls>
-            <version>0.2.0</version>
+            <version>0.3.0</version>
         </Flagbit_FilterUrls>
     </modules>
     <frontend>
@@ -103,6 +103,14 @@
             </controller_front_init_routers>
         </events>
     </global>
+    <default>
+        <system>
+            <filterurls>
+                <enable_crawler>0</enable_crawler>
+                <crawler_threads>2</crawler_threads>
+            </filterurls>
+        </system>
+    </default>
     <crontab>
         <jobs>
             <filterurls_sitemap>
@@ -113,6 +121,14 @@
                     <model>flagbit_filterurls/sitemap::generateXml</model>
                 </run>
             </filterurls_sitemap>
+            <filterurls_crawler>
+                <schedule>
+                    <cron_expr>0 2 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>flagbit_filterurls/observer::filterurls_crawler</model>
+                </run>
+            </filterurls_crawler>
         </jobs>
     </crontab>
 </config>

@@ -42,7 +42,6 @@ require_once 'abstract.php';
  */
 class Mage_Shell_Filterurls extends Mage_Shell_Abstract
 {
-
     /**
      * Run script
      *
@@ -53,14 +52,26 @@ class Mage_Shell_Filterurls extends Mage_Shell_Abstract
             echo "clean";
         } elseif ($this->getArg('sitemap')) {
             $storeId = $this->getArg('store');
-            if($storeId == false) {
+            if ($storeId == false) {
                 echo $this->usageHelp();
+
                 return;
             }
             Mage::app()->setCurrentStore($storeId);
-            /* @var $sitemap Flagbit_FilterUrls_Model_Sitemap */
-            $sitemap = Mage::getModel('filterurls/sitemap');
-            $sitemap->generateXml();
+            /* @var $crawler Flagbit_FilterUrls_Model_Sitemap */
+            $crawler = Mage::getModel('filterurls/sitemap');
+            $crawler->generateXml();
+        } elseif ($this->getArg('crawl')) {
+            $storeId = $this->getArg('store');
+            if ($storeId == false) {
+                echo $this->usageHelp();
+
+                return;
+            }
+            Mage::app()->setCurrentStore($storeId);
+            /* @var $crawler Flagbit_FilterUrls_Model_Crawler */
+            $crawler = Mage::getModel('filterurls/crawler');
+            $crawler->crawlFilterUrls();
         } else {
             echo $this->usageHelp();
         }
@@ -75,11 +86,10 @@ class Mage_Shell_Filterurls extends Mage_Shell_Abstract
         return <<<USAGE
 Usage:  php -f filterurls.php -- [options]
         php -f filterurls.php --clean
+        php -f filterurls.php --crawl --store <store_id>
         php -f filterurls.php --sitemap --store <store_id>
 
-  sitemap --store <store_id>    Create a sitemap
-  help                          This help
-
+        help  This help
 USAGE;
     }
 }
