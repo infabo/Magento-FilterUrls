@@ -65,6 +65,7 @@
             </filterurls_resource_mysql4>
             <catalog>
                 <rewrite>
+                    <layer_filter_category>Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Category</layer_filter_category>
                     <layer_filter_item>Flagbit_FilterUrls_Model_Catalog_Layer_Filter_Item</layer_filter_item>
                 </rewrite>
             </catalog>

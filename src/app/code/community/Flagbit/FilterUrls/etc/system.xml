@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--This System config field is created to eliminate the category
+from the Layered Category Filter. This is usually root category -->
+<config>
+    <sections>
+        <catalog>
+            <groups>
+                <seo>
+                    <fields>
+                        <root_category translate="label">
+                            <label>SEO Top-Level Category</label>
+                            <frontend_type>text</frontend_type>
+                            <!--TODO source_model to be a collection of active categories-->
+                            <comment>This is the Top Level Category Id, which will not appear in the catalog layer state</comment>
+                            <sort_order>900</sort_order>
+                            <validate>validate-digits</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </root_category>
+                    </fields>
+                </seo>
+            </groups>
+        </catalog>
+    </sections>
+
+</config>

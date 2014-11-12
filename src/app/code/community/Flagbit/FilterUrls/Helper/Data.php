@@ -51,6 +51,7 @@ class Flagbit_FilterUrls_Helper_Data extends Mage_Catalog_Helper_Product_Url
         $this->_convertTable['('] = '_';
         $this->_convertTable[')'] = '_';
         $this->_convertTable['='] = '_';
+        $this->_convertTable['\''] = '_';
     }
 
     /**
