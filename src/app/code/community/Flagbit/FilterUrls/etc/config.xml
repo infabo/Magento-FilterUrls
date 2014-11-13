@@ -118,7 +118,7 @@
                     <cron_expr>30 1 * * *</cron_expr>
                 </schedule>
                 <run>
-                    <model>flagbit_filterurls/sitemap::generateXml</model>
+                    <model>filterurls/sitemap::generateXml</model>
                 </run>
             </filterurls_sitemap>
             <filterurls_crawler>
@@ -126,7 +126,7 @@
                     <cron_expr>0 2 * * *</cron_expr>
                 </schedule>
                 <run>
-                    <model>flagbit_filterurls/observer::filterurls_crawler</model>
+                    <model>filterurls/observer::filterurls_crawler</model>
                 </run>
             </filterurls_crawler>
         </jobs>
