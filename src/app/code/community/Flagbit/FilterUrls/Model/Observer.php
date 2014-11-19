@@ -31,8 +31,8 @@ class Flagbit_FilterUrls_Model_Observer
             return null;
         }
 
-        /* @var $sitemap Flagbit_FilterUrls_Model_Sitemap */
-        $sitemap = Mage::getModel('filterurls/sitemap');
-        $sitemap->crawlFilterUrls();
+        /* @var $crawler Flagbit_FilterUrls_Model_Crawler */
+        $crawler = Mage::getModel('filterurls/crawler');
+        $crawler->crawlFilterUrls();
     }
 }
