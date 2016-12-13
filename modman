@@ -1,4 +1,4 @@
-src/app/code/community/Flagbit/FilterUrls src/app/code/community/Flagbit/FilterUrls
-src/app/design/frontend/base/default/layout/filterurls.xml src/app/design/frontend/base/default/layout/filterurls.xml
-src/app/etc/modules/Flagbit_FilterUrls.xml src/app/etc/modules/Flagbit_FilterUrls.xml
-src/shell/filterurls.php src/shell/filterurls.php
+src/app/code/community/Flagbit/FilterUrls app/code/community/Flagbit/FilterUrls
+src/app/design/frontend/base/default/layout/filterurls.xml app/design/frontend/base/default/layout/filterurls.xml
+src/app/etc/modules/Flagbit_FilterUrls.xml app/etc/modules/Flagbit_FilterUrls.xml
+src/shell/filterurls.php shell/filterurls.php
